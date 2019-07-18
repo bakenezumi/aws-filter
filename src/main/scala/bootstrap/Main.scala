@@ -10,26 +10,23 @@ object Main {
     // 初期化処理
     val runtime = System.getenv("AWS_LAMBDA_RUNTIME_API")
 
-    def errorHandler(e: Exception): Unit = {
-      val message =
-        s"""
-           |{
-           |  "errorMessage": "${e.getMessage}",
-           |  "errorType": "${e.getClass.getName}"
-           |}
-           |""".stripMargin
-      Jsoup
-        .connect(s"http://$runtime/2018-06-01/runtime/init/error")
-        .method(Connection.Method.POST)
-        .requestBody(message)
-        .execute()
-    }
-
-    try {
-      println(s"runtime: $runtime")
-    } catch {
-      case e: Exception => errorHandler(e)
-    }
+//    try {
+//      println(s"runtime: $runtime")
+//    } catch {
+//      case e: Exception =>
+//        val message =
+//          s"""
+//             |{
+//             |  "errorMessage": "${e.getMessage}",
+//             |  "errorType": "${e.getClass.getName}"
+//             |}
+//             |""".stripMargin
+//        Jsoup
+//          .connect(s"http://$runtime/2018-06-01/runtime/init/error")
+//          .method(Connection.Method.POST)
+//          .requestBody(message)
+//          .execute()
+//    }
 
     val requestConnection = Jsoup
       .connect(s"http://$runtime/2018-06-01/runtime/invocation/next")
@@ -57,7 +54,7 @@ object Main {
           .execute()
       } catch {
         case e: Exception =>
-          errorHandler(e)
+//          errorHandler(e)
       }
     }
   }
